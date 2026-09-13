@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Шерик & Асел — Үйлөнүү үлпөтү</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-green: #3e5336;
+      --soft-green: #5b7352;
+      --bg-cream: #fbfaf5;
+      --text-dark: #222222;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-cream);
+      color: var(--text-dark);
+      font-family: 'Montserrat', sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--primary-green);
+      color: var(--primary-green);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-size: 20px;
+    }
+
+    #envelope-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f0ece1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+      padding: 20px;
+    }
+
+    .envelope-box {
+      width: 300px;
+      padding: 35px 20px;
+      background: #ffffff;
+      border: 1px solid #dcd7cd;
+      border-radius: 14px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .wax-seal {
+      width: 55px;
+      height: 55px;
+      background: #4a6341;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .envelope-title {
+      font-family: 'Alex Brush', cursive;
+      font-size: 40px;
+      color: var(--primary-green);
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+
+    .envelope-hint {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+    }
+
+    .main-content {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 25px 20px 40px 20px;
+      background-color: #ffffff;
+      min-height: 100vh;
+      box-shadow: 0 0 25px rgba(0,0,0,0.03);
+    }
+
+    .cursive {
+      font-family: 'Alex Brush', cursive;
+    }
+
+    .serif {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .polaroid {
+      background: white;
+      padding: 12px 12px 25px 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      border: 1px solid #ebebeb;
+      margin: 15px auto 25px auto;
+      width: 92%;
+    }
+
+    .polaroid img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+      border-radius: 4px;
+    }
+
+    .polaroid .date-caption {
+      margin-top: 15px;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: #444;
+    }
+
+    .names-title {
+      font-size: 52px;
+      color: var(--primary-green);
+      margin: 15px 0 10px 0;
+      line-height: 1.2;
+    }
+
+    .invitation-text {
+      font-size: 16px;
+      line-height: 1.85;
+      color: #444;
+      margin: 20px 0;
+      font-weight: 300;
+    }
+
+    .host-names {
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--primary-green);
+      margin-top: 8px;
+    }
+
+    .calendar-card {
+      margin: 35px 0 30px 0;
+      padding: 22px 15px;
+      background: #faf8f5;
+      border-radius: 12px;
+      border: 1px solid #f0ebe1;
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .calendar-grid div {
+      padding: 6px 0;
+    }
+
+    .day-header {
+      font-weight: 600;
+      color: #888;
+      font-size: 12px;
+    }
+
+    .heart-day {
+      background-color: var(--soft-green);
+      color: white;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    .time-badge {
+      display: inline-block;
+      margin-top: 18px;
+      font-size: 26px;
+      color: var(--primary-green);
+    }
+
+    .timer-section {
+      margin: 35px 0;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      background: #faf8f5;
+      border: 1px solid #ede7dc;
+      padding-bottom: 25px;
+    }
+
+    .timer-section img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .timer-title {
+      font-size: 40px;
+      margin: 20px 0 15px 0;
+      color: #111111;
+      font-weight: 600;
+    }
+
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 10px;
+    }
+
+    .countdown-item {
+      background: #ffffff;
+      padding: 10px 12px;
+      border-radius: 10px;
+      min-width: 62px;
+      border: 1px solid #dcd5c7;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .countdown-item span {
+      display: block;
+      font-size: 26px;
+      font-weight: 600;
+      color: var(--primary-green);
+    }
+
+    .countdown-item label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .location-box {
+      margin: 35px 0;
+      padding: 25px 20px;
+      border: 1px solid #e5ded2;
+      border-radius: 12px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 18px;
+      padding: 12px 28px;
+      background-color: var(--soft-green);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .rsvp-box {
+      margin-top: 35px;
+      padding: 30px 20px;
+      background: #faf8f5;
+      border-radius: 12px;
+      border: 1px solid #f0ebe1;
+      text-align: left;
+    }
+
+    .rsvp-box h3 {
+      text-align: center;
+      font-size: 38px;
+      color: var(--primary-green);
+      margin-bottom: 25px;
+    }
+
+    .radio-option {
+      display: block;
+      margin-bottom: 14px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .counter-control {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 15px 0 20px 0;
+    }
+
+    .count-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      background: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .text-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #dcd6cb;
+      border-radius: 6px;
+      background: white;
+      font-family: inherit;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .footer-credit {
+      margin-top: 40px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+      font-size: 11px;
+      color: #888;
+    }
+
+    .footer-credit a {
+      color: var(--soft-green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Аудио (Скриншоттогу аталыш менен) -->
+  <audio id="bg-music" loop preload="auto">
+    <source src="music.mp3.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="music-control" id="music-toggle" onclick="toggleMusic()">
+    🎵
+  </div>
+
+  <!-- Конверт экраны -->
+  <div id="envelope-screen">
+    <div class="envelope-box" onclick="openEnvelope()">
+      <div class="wax-seal">💌</div>
+      <div class="envelope-title">Шерик & Асел</div>
+      <p class="envelope-hint">Чакырууну алуу үчүн<br>конверттин үстүнө басыңыз</p>
+    </div>
+  </div>
+
+  <!-- Негизги бөлүк -->
+  <div class="main-content">
+    
+    <!-- 1-сүрөт (IMG_9692.jpeg) -->
+    <div class="polaroid">
+      <img src="IMG_9692.jpeg" alt="Шерик & Асел">
+      <div class="date-caption serif">15.09.2026</div>
+    </div>
+
+    <h1 class="names-title cursive">Шерик & Асел</h1>
+    
+    <p class="cursive" style="font-size: 32px; color: var(--primary-green); margin-top: 25px;">
+      Урматтуу биздин сыйлуу конокторубуз!
+    </p>
+
+    <p class="invitation-text">
+      Сиздерди балдарыбыз <strong>Шерик</strong> менен <strong>Аселдин</strong> үйлөнүү үлпөт тоюна арналган салтанаттуу кечебизге келип, ак дасторконубуздан даам сызып, ак батаңыздарды берип, кадырлуу коногубуз болуп кетүүгө чакырабыз!
+    </p>
+
+    <div style="margin: 20px 0;">
+      <p style="font-size: 13px; color: #777;">Терең урматыбыз менен той ээлери:</p>
+      <p class="host-names serif">Русланбек — Нуриза</p>
+    </div>
+
+    <!-- Календарь -->
+    <div class="calendar-card">
+      <h2 class="cursive" style="font-size: 32px; color: var(--primary-green);">2026-жылдын 15-сентябры</h2>
+      <div class="calendar-grid">
+        <div class="day-header">Дб</div>
+        <div class="day-header">Шб</div>
+        <div class="day-header">Шр</div>
+        <div class="day-header">Бш</div>
+        <div class="day-header">Жм</div>
+        <div class="day-header">Иш</div>
+        <div class="day-header">Жш</div>
+
+        <div></div>
+        <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+        <div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div>
+        <div>14</div>
+        <div class="heart-day">15</div>
+        <div>16</div><div>17</div><div>18</div><div>19</div><div>20</div>
+        <div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div>
+        <div>28</div><div>29</div><div>30</div>
+      </div>
+      <div class="time-badge cursive">саат 19:00</div>
+    </div>
+
+    <!-- 2-сүрөт (IMG_9693.jpeg) жана таймер -->
+    <div class="timer-section">
+      <img src="IMG_9693.jpeg" alt="Шерик жана Асел">
+      <h2 class="timer-title cursive">Тойго чейин:</h2>
+      <div class="countdown">
+        <div class="countdown-item">
+          <span id="days">00</span>
+          <label>күн</label>
+        </div>
+        <div class="countdown-item">
+          <span id="hours">00</span>
+          <label>саат</label>
+        </div>
+        <div class="countdown-item">
+          <span id="minutes">00</span>
+          <label>мүнөт</label>
+        </div>
+        <div class="countdown-item">
+          <span id="seconds">00</span>
+          <label>секунд</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="location-box">
+      <h2 class="cursive" style="font-size: 34px; color: var(--primary-green);">Дарегибиз:</h2>
+      <p style="font-size: 15px; margin-top: 10px; color: #444;">Токтогул шаары</p>
+      <p class="serif" style="font-size: 24px; font-weight: 600; margin-top: 5px;">«ТИБЕТ» рестораны</p>
+      <p style="font-size: 12px; color: #777; margin-top: 10px;">Ресторанды оңой табуу үчүн картаны колдонуңуз</p>
+      <a href="https://2gis.kg" target="_blank" class="btn">Картаны кароо (2GIS)</a>
+    </div>
+
+    <div class="rsvp-box">
+      <h3 class="cursive">Тойго келесизби?</h3>
+      
+      <div class="radio-group">
+        <label class="radio-option">
+          <input type="radio" name="attendance" value="yes" checked> Ооба, сөзсүз барам
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="attendance" value="pair"> Жубайым менен барам
+        </label>
+        <label class="radio-option">
+          <input type="radio" name="attendance" value="no"> Тилекке каршы, бара албайм
+        </label>
+      </div>
+
+      <label style="font-size: 13px; font-weight: 500;">Канча адам болуп келесиз?</label>
+      <div class="counter-control">
+        <button type="button" class="count-btn" onclick="updateGuestCount(-1)">-</button>
+        <span id="guest-count" style="font-weight: 600; font-size: 16px;">1</span>
+        <button type="button" class="count-btn" onclick="updateGuestCount(1)">+</button>
+      </div>
+
+      <input type="text" id="guest-name" class="text-input" placeholder="Аты-жөнүңүздү жазыңыз">
+
+      <button type="button" class="btn" style="width: 100%; border-radius: 6px; margin-top: 15px;" onclick="submitRSVP()">Жөнөтүү</button>
+    </div>
+
+    <div class="footer-credit">
+      Заказ үчүн: <a href="https://instagram.com/aiza_bayalieva" target="_blank">@aiza_bayalieva</a>
+    </div>
+
+  </div>
+
+  <script>
+    const music = document.getElementById('bg-music');
+    let isPlaying = false;
+
+    function openEnvelope() {
+      const envelope = document.getElementById('envelope-screen');
+      envelope.style.opacity = '0';
+      setTimeout(() => {
+        envelope.style.visibility = 'hidden';
+      }, 800);
+
+      music.play().then(() => {
+        isPlaying = true;
+        document.getElementById('music-toggle').innerText = '🎵';
+      }).catch(err => {
+        console.log("Play error:", err);
+      });
+    }
+
+    function toggleMusic() {
+      if (isPlaying) {
+        music.pause();
+        document.getElementById('music-toggle').innerText = '🔈';
+      } else {
+        music.play();
+        document.getElementById('music-toggle').innerText = '🎵';
+      }
+      isPlaying = !isPlaying;
+    }
+
+    const weddingDate = new Date("September 15, 2026 19:00:00").getTime();
+
+    setInterval(function() {
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+
+      if (distance < 0) {
+        document.querySelector(".countdown").innerHTML = "<p style='font-size:18px; color: #3e5336;'>Той башталды!</p>";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").innerText = days < 10 ? '0' + days : days;
+      document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
+      document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+      document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+    }, 1000);
+
+    let guests = 1;
+    function updateGuestCount(amount) {
+      guests += amount;
+      if (guests < 1) guests = 1;
+      document.getElementById('guest-count').innerText = guests;
+    }
+
+    function submitRSVP() {
+      const name = document.getElementById('guest-name').value.trim();
+      if (!name) {
+        alert('Сураныч, аты-жөнүңүздү жазыңыз!');
+        return;
+      }
+
+      const selectedRadio = document.querySelector('input[name="attendance"]:checked');
+      let answerText = selectedRadio.value === 'yes' ? "Ооба, сөзсүз барам" : (selectedRadio.value === 'pair' ? "Жубайым менен барам" : "Тилекке каршы, бара албайм");
+
+      const myPhoneNumber = "996559010206";
+      const message = `Саламатсыздарбы!\n\nШерик менен Аселдин үйлөнүү тоюна жооп:\n👤 Конок: ${name}\n✨ Жообу: ${answerText}\n👥 Адам саны: ${guests}`;
+
+      window.open(`https://api.whatsapp.com/send?phone=${myPhoneNumber}&text=${encodeURIComponent(message)}`, '_blank');
+    }
+  </script>
+</body>
+</html>
